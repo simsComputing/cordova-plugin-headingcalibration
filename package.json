@@ -1,0 +1,23 @@
+{
+  "name": "cordova-plugin-headingcalibration",
+  "version": "1.0.0",
+  "description": "Cordova plugin to check for compass calibration",
+  "author": "simsComputing",
+  "license": "ISC",
+  "keywords": [
+    "ios",
+    "android",
+    "phonegap",
+    "heading",
+    "calibration"
+  ],
+  "engines": {
+    "cordovaDependencies": {
+      "4.0.0": {
+        "cordova": ">=8.2.2",
+        "cordova-android": "^7.1.4",
+        "cordova-ios": "^4.5.5"
+      }
+    }
+  }
+}
