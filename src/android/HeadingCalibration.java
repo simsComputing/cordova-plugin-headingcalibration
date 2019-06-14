@@ -46,7 +46,7 @@ public class HeadingCalibration extends CordovaPlugin implements SensorEventList
                 this.callbackContext = null;
                 callbackContext.success();
             } else {
-                callbackContext.error();
+                callbackContext.error("Heading calibration was not being watched");
             }
         }
 
