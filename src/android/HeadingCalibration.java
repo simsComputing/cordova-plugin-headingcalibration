@@ -18,7 +18,7 @@ public class HeadingCalibration extends CordovaPlugin implements SensorEventList
     public HeadingCalibration()
     {
         this.accuracy = -1;
-        this.runs = false;
+        this.callbackContext = null;
     }
 
     public void initialize(CordovaInterface cordova, CordovaWebView webView)
@@ -35,13 +35,13 @@ public class HeadingCalibration extends CordovaPlugin implements SensorEventList
         CallbackContext callbackContext
     ) throws JSONException {
         if (action.equals("watchCalibration")) {
-            if (this.runs == true) {
+            if (this.callbackContext != null) {
                 this.stop();
             }
             this.callbackContext = callbackContext;
             this.sensorManager.registerListener(this, this.magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         } else if (action.equals("stopWatchCalibration")) {
-            if (this.runs == true) {
+            if (this.callbackContext != null) {
                 this.stop();
                 this.callbackContext = null;
                 callbackContext.success();
