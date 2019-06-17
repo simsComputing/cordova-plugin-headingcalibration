@@ -7,24 +7,25 @@
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.watchCalibrationCallbackId = nil;
-    self.runs = false;
-    self.accuracy = -1;
+    self.accuracy = nil;
+    self.isCalibrationCallbackFirstCall = true;
 }
 
 - (void)watchCalibration:(CDVInvokedUrlCommand*)command
 {
     if ([CLLocationManager headingAvailable]) {
-        self.watchCalibrationCallbackId = command.callbackId;
-        if (self.runs) {
+        if (self.watchCalibrationCallbackId) {
             [self.locationManager stopUpdatingHeading];
         }
         self.watchCalibrationCallbackId = command.callbackId;
+        self.isCalibrationCallbackFirstCall = true;
         [self.locationManager startUpdatingHeading];
-        self.runs = true;
     } else {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Heading is not available on this device"];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
+
+    self.iterations++;
 }
 
 - (void)stopWatchCalibration:(CDVInvokedUrlCommand*)command
@@ -46,28 +47,27 @@
 /**
  * IN ORDER TO IMITATE android behaviour we want to send the accuracy only if its value has changed
  */
-- (void)didUpdateHeading: (CLLocationManager*)manager didUpdateHeading: (CLHeading*)newHeading
+- (void)locationManager: (CLLocationManager*)manager didUpdateHeading: (CLHeading*)newHeading
 {
     CDVPluginResult* pluginResult = nil;
     double iosAccuracy = (double)[newHeading headingAccuracy];
-    int accuracy = -1;
 
-    if (iosAccuracy < (double)5) {
-        accuracy = 3;
-    } else if (iosAccuracy < (double)12) {
-        accuracy = 2;
-    } else if (iosAccuracy < (double)25) {
-        accuracy = 1;
-    } else {
-        accuracy = 0;
-    }
-
-    if (self.accuracy != accuracy) {
-        self.accuracy = accuracy;
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:accuracy];
+    if (self.accuracy != iosAccuracy || self.isCalibrationCallbackFirstCall == true) {
+        self.isCalibrationCallbackFirstCall = false;
+        self.accuracy = iosAccuracy;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:accuracy];
         [pluginResult setKeepCallbackAsBool: true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.watchCalibrationCallbackId];
     }
+}
+
+- (bool)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager
+{
+    if (manager.heading.headingAccuracy > 5 || manager.heading.headingAccuracy < 0) {
+        return true;
+    }
+
+    return false;
 }
 
 @end

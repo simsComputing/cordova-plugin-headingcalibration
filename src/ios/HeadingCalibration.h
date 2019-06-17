@@ -6,8 +6,8 @@
 
 @property (nonatomic) CLLocationManager* locationManager;
 @property (nonatomic) NSString* watchCalibrationCallbackId;
-@property (nonatomic) bool runs;
-@property (nonatomic) int accuracy;
+@property (nonatomic) double accuracy;
+@property (nonatomic) bool isCalibrationCallbackFirstCall;
 
 - (void)watchCalibration:(CDVInvokedUrlCommand*)command;
 - (void)stopWatchCalibration:(CDVInvokedUrlCommand*)command;

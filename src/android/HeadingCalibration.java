@@ -17,7 +17,6 @@ public class HeadingCalibration extends CordovaPlugin implements SensorEventList
 
     public HeadingCalibration()
     {
-        this.accuracy = -1;
         this.callbackContext = null;
     }
 
