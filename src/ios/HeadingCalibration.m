@@ -7,7 +7,7 @@
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.watchCalibrationCallbackId = nil;
-    self.accuracy = nil;
+    self.accuracy = 0;
     self.isCalibrationCallbackFirstCall = true;
 }
 
