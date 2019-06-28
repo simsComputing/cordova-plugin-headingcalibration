@@ -55,7 +55,7 @@
     if (self.accuracy != iosAccuracy || self.isCalibrationCallbackFirstCall == true) {
         self.isCalibrationCallbackFirstCall = false;
         self.accuracy = iosAccuracy;
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:accuracy];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:self.accuracy];
         [pluginResult setKeepCallbackAsBool: true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.watchCalibrationCallbackId];
     }
