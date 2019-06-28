@@ -24,8 +24,6 @@
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Heading is not available on this device"];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
-
-    self.iterations++;
 }
 
 - (void)stopWatchCalibration:(CDVInvokedUrlCommand*)command
